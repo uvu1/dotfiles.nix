@@ -1,6 +1,11 @@
 { ... }:
 
 {
+  imports = [
+    ./lsp.nix
+    ./completion.nix
+  ];
+
   programs.nixvim = {
     enable = true;
 
@@ -32,17 +37,6 @@
       treesitter.enable = true;
       web-devicons.enable = true;
       which-key.enable = true;
-      
-      lsp = {
-          enable = true;
-
-          servers = {
-            nil_ls.enable = true;
-            yamlls.enable = true;
-            };
-        };
     };
-
-
   };
 }
