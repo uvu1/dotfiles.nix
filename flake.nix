@@ -32,6 +32,19 @@
 
         modules = [
           ./hosts/nix-vm
+
+          inputs.home-manager.nixosModules.home-manager
+
+          {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                };
+
+              home-manager.users.uvu1 = import ./home/uvu1.nix;
+            }
         ];
       };
     };
