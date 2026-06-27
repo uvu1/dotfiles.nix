@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ inputs, ... }:
 
 {
   imports = [
+    inputs.nixvim.homeModules.nixvim
     ./cli.nix
     ./git.nix
     ./zsh.nix
