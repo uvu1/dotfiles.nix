@@ -6,7 +6,7 @@
     ./git.nix
     ./zsh.nix
     ./wezterm.nix
-    ./nixvim/
+    ./nixvim
   ];
 
   home.username = "uvu1";
