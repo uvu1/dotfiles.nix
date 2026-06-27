@@ -1,6 +1,3 @@
-cd ~/dotfiles.nix
-
-cat > home/nixvim/completion.nix <<'EOF'
 { ... }:
 
 {
@@ -20,4 +17,3 @@ cat > home/nixvim/completion.nix <<'EOF'
     };
   };
 }
-EOF
