@@ -5,6 +5,7 @@
     ./cli.nix
     ./git.nix
     ./zsh.nix
+    ./wezterm.nix
   ];
 
   home.username = "uvu1";
