@@ -6,15 +6,12 @@
     eza
     fd
     fzf
-
     gh
     ghq
     jq
     ripgrep
-
     kubernetes-helm
     kubectl
-
     lazygit
     cloudflared
     just
