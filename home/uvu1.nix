@@ -28,7 +28,7 @@
       syntaxHighlighting.enable = true;
     };
 
-  programs.staarship = {
+  programs.starship = {
       enable = true;
       enableZshIntegration = true;
     };
