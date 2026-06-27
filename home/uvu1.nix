@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./cli.nix
+    ./git.nix
+  ];
+
   home.username = "uvu1";
   home.homeDirectory = "/home/uvu1";
 
@@ -17,8 +22,6 @@
     yq-go
     zoxide
   ];
-
-  programs.git.enable = true;
 
   programs.zsh = {
       enable = true;
