@@ -8,7 +8,7 @@
       user = {
           name = "uvu1";
           email = "53385458+uvu1@users.noreply.github.com";
-        }
+        };
 
       init.defaultBranch = "main";
 
