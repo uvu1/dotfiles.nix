@@ -11,15 +11,28 @@
 
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, ... }:
+  outputs = inputs@{ nixpkgs, ... }:
     let
       system = "x86_64-linux";
     in
     {
       formatter.${system} =
         nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+
+      nixosConfigurations.nix-vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = {
+          inherit inputs;
+        };
+
+        modules = [
+          ./hosts/nix-vm
+        ];
+      };
     };
 }
