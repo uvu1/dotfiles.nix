@@ -2,8 +2,10 @@
 
 {
   imports = [
+    inputs.zen-browser.homeModules.beta
     inputs.nixvim.homeModules.nixvim
     ./cli.nix
+    ./gui.nix
     ./git.nix
     ./zsh.nix
     ./wezterm.nix

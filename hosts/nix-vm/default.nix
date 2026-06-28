@@ -3,6 +3,11 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/system/desktop.nix
+    ../../modules/system/flatpak.nix
+    ../../modules/system/gaming.nix
+    ../../modules/system/ime.nix
+    ../../modules/system/onepassword.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -12,17 +17,17 @@
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Tokyo";
-  i18n.defaultLocale = "ja_JP.UTF-8";
-
-  services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
   virtualisation.vmware.guest.enable = true;
 
   users.users.uvu1 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "audio"
+      "input"
+      "networkmanager"
+      "video"
+      "wheel"
+    ];
     shell = pkgs.zsh;
   };
 
