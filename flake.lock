@@ -42,6 +42,22 @@
         "type": "github"
       }
     },
+    "kawaii-theme-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779801148,
+        "narHash": "sha256-EMuqpMVSVIetns6WVJMcQ33VMvLABQsfin/4OF6fG4o=",
+        "owner": "uvu1",
+        "repo": "kawaii-theme.nvim",
+        "rev": "767eab09c15ebeaf6625b60c97acc32827d4c978",
+        "type": "github"
+      },
+      "original": {
+        "owner": "uvu1",
+        "repo": "kawaii-theme.nvim",
+        "type": "github"
+      }
+    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
@@ -97,12 +113,30 @@
         "type": "github"
       }
     },
+    "pane-tabs-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778532571,
+        "narHash": "sha256-AnZJcKCDEW87g+3lOVD0p8tIvBll8GJOTBrdrcyUeUE=",
+        "owner": "uvu1",
+        "repo": "pane-tabs.nvim",
+        "rev": "baf3aea5b1ee0c3939fd5fdbe9bc8007d5fb8039",
+        "type": "github"
+      },
+      "original": {
+        "owner": "uvu1",
+        "repo": "pane-tabs.nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kawaii-theme-nvim": "kawaii-theme-nvim",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
+        "pane-tabs-nvim": "pane-tabs-nvim",
         "zen-browser": "zen-browser"
       }
     },

@@ -21,6 +21,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    kawaii-theme-nvim = {
+      url = "github:uvu1/kawaii-theme.nvim";
+      flake = false;
+    };
+
+    pane-tabs-nvim = {
+      url = "github:uvu1/pane-tabs.nvim";
+      flake = false;
+    };
   };
 
   outputs =

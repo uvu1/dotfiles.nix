@@ -36,7 +36,6 @@
   environment.systemPackages = with pkgs; [
     git
     curl
-    neovim
   ];
 
   nix.settings.experimental-features = [

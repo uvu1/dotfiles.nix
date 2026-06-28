@@ -1,28 +1,6 @@
-{ lib, pkgs, ... }:
-
-let
-  pipewireWithoutLibcamera =
-    pipewire: libcamera:
-    (pipewire.override {
-      bluezSupport = false;
-      ffadoSupport = false;
-      rocSupport = false;
-    }).overrideAttrs
-      (old: {
-        buildInputs = lib.remove libcamera (old.buildInputs or [ ]);
-        mesonFlags = lib.filter (flag: !(lib.hasPrefix "-Dlibcamera=" flag)) (old.mesonFlags or [ ]) ++ [
-          "-Dlibcamera=disabled"
-        ];
-      });
-in
+{ pkgs, ... }:
 
 {
-  nixpkgs.overlays = [
-    (final: prev: {
-      pipewire = pipewireWithoutLibcamera prev.pipewire prev.libcamera;
-    })
-  ];
-
   services.xserver.enable = true;
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;

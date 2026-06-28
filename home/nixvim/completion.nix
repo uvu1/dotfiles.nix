@@ -1,19 +1,174 @@
 { ... }:
 
+let
+  raw = code: { __raw = code; };
+in
+
 {
-  programs.nixvim.plugins.blink-cmp = {
-    enable = true;
+  programs.nixvim.plugins = {
+    friendly-snippets.enable = true;
 
-    setupLspCapabilities = true;
+    blink-cmp = {
+      enable = true;
+      setupLspCapabilities = true;
 
-    settings = {
-      keymap.preset = "super-tab";
+      settings = {
+        enabled = raw ''
+          function()
+            return not vim.tbl_contains({ "codecompanion", "pane-tabs-ai" }, vim.bo.filetype)
+          end
+        '';
 
-      completion = {
-        documentation.auto_show = true;
+        keymap = {
+          preset = "super-tab";
+
+          "<Tab>" = [
+            (raw ''
+              function(cmp)
+                if cmp.snippet_active() then
+                  return cmp.accept()
+                end
+                return cmp.select_and_accept()
+              end
+            '')
+            "snippet_forward"
+            (raw ''
+              function()
+                local ok, sidekick = pcall(require, "sidekick")
+                if ok and sidekick.nes_jump_or_apply() then
+                  return true
+                end
+                return false
+              end
+            '')
+            (raw ''
+              function()
+                if vim.lsp.inline_completion then
+                  return vim.lsp.inline_completion.get()
+                end
+                return false
+              end
+            '')
+            "fallback"
+          ];
+          "<C-space>" = [
+            "show"
+            "show_documentation"
+            "hide_documentation"
+          ];
+          "<C-e>" = [
+            "hide"
+            "fallback"
+          ];
+          "<CR>" = [
+            "accept"
+            "fallback"
+          ];
+        };
+
+        snippets.preset = "default";
+
+        completion = {
+          keyword.range = "prefix";
+
+          list.selection = {
+            preselect = false;
+            auto_insert = false;
+          };
+
+          accept.auto_brackets.enabled = true;
+
+          menu = {
+            border = "rounded";
+            draw = {
+              treesitter = { };
+              columns = raw ''
+                {
+                  { "kind_icon" },
+                  { "label", "label_description", gap = 1 },
+                  { "source_name" },
+                }
+              '';
+            };
+          };
+
+          documentation = {
+            auto_show = false;
+            auto_show_delay_ms = 500;
+            treesitter_highlighting = false;
+            window.border = "rounded";
+          };
+
+          ghost_text.enabled = false;
+        };
+
+        signature = {
+          enabled = true;
+          window.border = "rounded";
+        };
+
+        sources = {
+          default = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+          ];
+
+          providers = {
+            lsp = {
+              max_items = 80;
+              score_offset = 10;
+            };
+            path.score_offset = 3;
+            snippets.score_offset = -1;
+            buffer.score_offset = -5;
+          };
+        };
+
+        fuzzy = {
+          implementation = "rust";
+          max_typos = raw ''
+            function(keyword)
+              return math.floor(#keyword / 4)
+            end
+          '';
+          frecency.enabled = true;
+          use_proximity = true;
+          sorts = [
+            "score"
+            "sort_text"
+          ];
+        };
+
+        cmdline = {
+          enabled = true;
+          keymap = {
+            preset = "cmdline";
+            "<CR>" = [ "fallback" ];
+            "<Tab>" = [
+              "show_and_insert_or_accept_single"
+              "select_next"
+            ];
+            "<C-y>" = [
+              "select_and_accept"
+              "fallback"
+            ];
+            "<C-e>" = [
+              "cancel"
+              "fallback"
+            ];
+          };
+          completion = {
+            menu.auto_show = false;
+            list.selection = {
+              preselect = false;
+              auto_insert = false;
+            };
+            ghost_text.enabled = false;
+          };
+        };
       };
-
-      signature.enabled = true;
     };
   };
 }
