@@ -9,11 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -70,34 +65,6 @@
             };
 
             home-manager.users.uvu1 = import ./home/uvu1.nix;
-          }
-        ];
-      };
-
-      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = {
-          inherit inputs;
-        };
-
-        modules = [
-          inputs.nixos-wsl.nixosModules.default
-          ./hosts/wsl
-
-          inputs.home-manager.nixosModules.home-manager
-
-          {
-            nixpkgs.config.allowUnfree = true;
-
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-            };
-
-            home-manager.users.uvu1 = import ./home/uvu1-wsl.nix;
           }
         ];
       };

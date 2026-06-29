@@ -25,6 +25,7 @@
 
       core = {
         editor = "nvim";
+        sshCommand = "/mnt/c/Windows/System32/OpenSSH/ssh.exe";
       };
 
       ghq.root = "~/repo";
