@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  aiAdapterAcp = pkgs.callPackage ../packages/ai-adapter-acp { };
+in
 {
   home.packages = with pkgs; [
     bat
@@ -16,6 +19,7 @@
     cloudflared
     codex
     claude-code
+    aiAdapterAcp
     direnv
     gemini-cli
     just

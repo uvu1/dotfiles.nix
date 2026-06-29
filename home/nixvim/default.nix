@@ -6,6 +6,8 @@
 }:
 
 let
+  aiAdapterAcp = pkgs.callPackage ../../packages/ai-adapter-acp { };
+
   luaFiles = [
     "lua/config/keymap/competitive.lua"
     "lua/config/keymap/utils.lua"
@@ -86,6 +88,7 @@ in
       lazygit
       mise
       nodejs
+      aiAdapterAcp
       prettier
       ripgrep
       ruff

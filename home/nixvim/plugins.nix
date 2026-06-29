@@ -27,6 +27,12 @@ let
       return type(path) == "string" and path ~= "" and vim.fn.executable(path) == 1
     end
 
+    local function notify_missing_acp(binary)
+      vim.schedule(function()
+        vim.notify(binary .. " not found; the ACP adapter is disabled", vim.log.levels.WARN)
+      end)
+    end
+
     local function resolve_acp_command(binary)
       local from_path = vim.fn.exepath(binary)
 
@@ -34,24 +40,8 @@ let
         return { from_path }
       end
 
-      local candidates = vim.fn.glob(vim.fn.expand("~/.local/share/mise/installs/node/*/bin/" .. binary), false, true)
-
-      table.sort(candidates, function(a, b)
-        return a > b
-      end)
-
-      vim.list_extend(candidates, {
-        vim.fn.expand("~/.local/share/mise/shims/" .. binary),
-        vim.fn.expand("~/.local/bin/" .. binary),
-      })
-
-      for _, path in ipairs(candidates) do
-        if executable(path) then
-          return { path }
-        end
-      end
-
-      return { binary }
+      notify_missing_acp(binary)
+      return nil
     end
   '';
 
@@ -127,35 +117,52 @@ in
     '';
 
     extraConfigLuaPost = ''
+      local ai_provider_order = { "copilot" }
+      local ai_providers = {
+        copilot = {
+          name = "Copilot",
+          label = " Copilot",
+          icon = "",
+          adapter = "copilot",
+          command = "CodeCompanionChat",
+        },
+      }
+
+      local function add_acp_provider(binary, key, provider)
+        if vim.fn.executable(binary) == 1 then
+          ai_providers[key] = provider
+          table.insert(ai_provider_order, key)
+          return
+        end
+
+        vim.schedule(function()
+          vim.notify(binary .. " not found; " .. provider.name .. " pane provider is disabled", vim.log.levels.WARN)
+        end)
+      end
+
+      add_acp_provider("codex-acp", "codex", {
+        name = "Codex",
+        label = "󰚩 Codex",
+        icon = "󰚩",
+        adapter = "codex",
+        command = "CodeCompanionChat",
+      })
+
+      add_acp_provider("claude-agent-acp", "claude", {
+        name = "Claude",
+        label = "󰛄 Claude",
+        icon = "󰛄",
+        adapter = "claude_code",
+        command = "CodeCompanionChat",
+      })
+
       require("pane-tabs").setup({
         ai = {
           enabled = true,
           width = 52,
           default_provider = "copilot",
-          provider_order = { "copilot", "codex", "claude" },
-          providers = {
-            copilot = {
-              name = "Copilot",
-              label = " Copilot",
-              icon = "",
-              adapter = "copilot",
-              command = "CodeCompanionChat",
-            },
-            codex = {
-              name = "Codex",
-              label = "󰚩 Codex",
-              icon = "󰚩",
-              adapter = "codex",
-              command = "CodeCompanionChat",
-            },
-            claude = {
-              name = "Claude",
-              label = "󰛄 Claude",
-              icon = "󰛄",
-              adapter = "claude_code",
-              command = "CodeCompanionChat",
-            },
-          },
+          provider_order = ai_provider_order,
+          providers = ai_providers,
         },
       })
 
@@ -226,10 +233,14 @@ in
             codex = raw ''
               function()
                 ${acpResolver}
+                local command = resolve_acp_command("codex-acp")
+                if not command then
+                  return nil
+                end
 
                 return require("codecompanion.adapters").extend("codex", {
                   commands = {
-                    default = resolve_acp_command("codex-acp"),
+                    default = command,
                   },
                   defaults = {
                     auth_method = "chatgpt",
@@ -244,10 +255,14 @@ in
             claude_code = raw ''
               function()
                 ${acpResolver}
+                local command = resolve_acp_command("claude-agent-acp")
+                if not command then
+                  return nil
+                end
 
                 return require("codecompanion.adapters").extend("claude_code", {
                   commands = {
-                    default = resolve_acp_command("claude-agent-acp"),
+                    default = command,
                   },
                 })
               end
