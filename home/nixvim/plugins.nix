@@ -604,12 +604,6 @@ in
                   action = "<leader>fc";
                 }
                 {
-                  icon = "󰒲 ";
-                  key = "l";
-                  desc = "Lazy";
-                  action = ":Lazy";
-                }
-                {
                   icon = " ";
                   key = "q";
                   desc = "Quit";
@@ -645,7 +639,6 @@ in
                   1
                 ];
               }
-              { section = "startup"; }
             ];
           };
 

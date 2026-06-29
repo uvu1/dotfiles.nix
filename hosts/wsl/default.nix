@@ -6,9 +6,6 @@
     defaultUser = "uvu1";
     useWindowsDriver = true;
     interop.register = true;
-
-    # Docker Desktop の WSL Integration を有効にしてから使う。
-    # docker-desktop.enable = true;
   };
 
   networking.hostName = "wsl";
