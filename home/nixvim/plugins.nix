@@ -246,7 +246,7 @@ in
                     auth_method = "chatgpt",
                     session_config_options = {
                       mode = "Full Access",
-                      thought_level = "Xhigh",
+                      thought_level = "xhigh",
                     },
                   },
                 })
@@ -263,6 +263,12 @@ in
                 return require("codecompanion.adapters").extend("claude_code", {
                   commands = {
                     default = command,
+                  },
+                  defaults = {
+                    session_config_options = {
+                      model = "opus",
+                      thought_level = "max",
+                    },
                   },
                 })
               end
